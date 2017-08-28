@@ -1,5 +1,6 @@
 package com.sam.dao;
 
+import com.sam.dao.generic.GenericDaoHibernate;
 import com.sam.model.Person;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -16,10 +17,14 @@ import java.util.List;
  * Created by root on 4/8/17.
  */
 
-public class PersonDaoImpl implements PersonDao {
+public class PersonDaoImpl extends GenericDaoHibernate<Person, String> implements PersonDao{
 
     @Autowired
     SessionFactory sessionFactory;
+
+    public PersonDaoImpl() {
+        super(Person.class);
+    }
 
 
     public List<Person> getPersonByEmail(String email){
@@ -34,10 +39,12 @@ public class PersonDaoImpl implements PersonDao {
 
 
         List<Person> list = (List<Person>) hibernateTemplate.findByCriteria(criteria);
-
         return list;
-
-
     }
+
+    public void add(Person person) {
+        save(person);
+    }
+
 
 }
